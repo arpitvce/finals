@@ -1,4 +1,3 @@
-import os
 import streamlit as st
 import google.generativeai as genai
 import uuid
@@ -11,8 +10,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# ================= REDIRECT CHECK =================
 if not st.session_state.get("authenticated", False):
     st.switch_page("login.py")
 
@@ -34,7 +31,40 @@ html, body {
         linear-gradient(135deg,#020617,#020617);
 }
 
-/* ================= PREMIUM SIDEBAR ================= */
+/* ================= PREMIUM CHAT INPUT ================= */
+
+[data-testid="stChatInput"] textarea {
+    border-radius:14px !important;
+    border:2px solid transparent !important;
+    padding:12px !important;
+    color:#ffffff !important;
+    background-image:
+        linear-gradient(#020617,#020617),
+        linear-gradient(90deg,#3b82f6,#06b6d4,#8b5cf6);
+    background-origin:border-box;
+    background-clip:padding-box,border-box;
+    transition: all 0.35s ease;
+}
+
+[data-testid="stChatInput"] textarea:focus {
+    box-shadow: 0 0 25px rgba(59,130,246,0.7);
+    outline:none !important;
+}
+
+[data-testid="stChatInput"] button {
+    border-radius:12px !important;
+    background: linear-gradient(90deg,#3b82f6,#8b5cf6) !important;
+    border:none !important;
+    color:white !important;
+    transition:0.3s ease;
+}
+
+[data-testid="stChatInput"] button:hover {
+    box-shadow: 0 0 18px rgba(139,92,246,0.8);
+    transform: scale(1.05);
+}
+
+/* ================= SIDEBAR ================= */
 
 section[data-testid="stSidebar"]{
     background:
@@ -45,53 +75,6 @@ section[data-testid="stSidebar"]{
     box-shadow:
         inset -1px 0 0 rgba(255,255,255,0.08),
         8px 0 30px rgba(0,0,0,0.35);
-}
-
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3{
-    letter-spacing:-0.3px;
-}
-
-section[data-testid="stSidebar"] .stMarkdown h3{
-    margin-top:10px;
-    font-size:15px;
-    opacity:0.9;
-    font-weight:600;
-}
-
-section[data-testid="stSidebar"] label{
-    padding:6px 8px;
-    border-radius:10px;
-    transition:0.25s;
-}
-
-section[data-testid="stSidebar"] label:hover{
-    background:rgba(99,102,241,0.18);
-    box-shadow:0 0 12px rgba(99,102,241,0.35);
-    transform:translateX(2px);
-}
-
-section[data-testid="stSidebar"] .stSelectbox{
-    margin-bottom:10px;
-}
-
-section[data-testid="stSidebar"] button{
-    border-radius:12px !important;
-    border:1px solid rgba(255,255,255,0.15) !important;
-    background:rgba(255,255,255,0.05) !important;
-    transition:0.25s !important;
-}
-
-section[data-testid="stSidebar"] button:hover{
-    transform:translateX(3px);
-    box-shadow:0 0 14px rgba(99,102,241,0.45);
-}
-
-hr{
-    border:0;
-    height:1px;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
 }
 
 .top-glass{
@@ -124,7 +107,7 @@ hr{
 """, unsafe_allow_html=True)
 
 # ================= GEMINI =================
-genai.configure(api_key=os.getenv("GET"))
+genai.configure(api_key="AIzaSyAA0XN23S195NFFGQY2A9D-KLz7XrxeK3Q")
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # ================= SESSION =================
@@ -250,52 +233,30 @@ STRICT FORMAT:
             col1, col2 = st.columns(2)
 
             with col1:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
                 st.markdown("### 📄 Original Code")
                 st.code(code_input, language=language.lower())
-                st.markdown("</div>", unsafe_allow_html=True)
 
             with col2:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
                 st.markdown("### ⚡ Optimized Code")
                 st.code(optimized_code, language=language.lower())
-                st.markdown("</div>", unsafe_allow_html=True)
 
-            if time_complex:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### ⏱ Time Complexity")
-                st.markdown(extract("Time Complexity"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### ⏱ Time Complexity")
+            st.markdown(extract("Time Complexity"))
 
-            if space_complex:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### 💾 Space Complexity")
-                st.markdown(extract("Space Complexity"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### 💾 Space Complexity")
+            st.markdown(extract("Space Complexity"))
 
-            if detect_bugs:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### 🐞 Bugs")
-                st.markdown(extract("Bugs"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### 🐞 Bugs")
+            st.markdown(extract("Bugs"))
 
-            if score_mode:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### 📊 Performance Score")
-                st.markdown(extract("Performance Score"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### 📊 Performance Score")
+            st.markdown(extract("Performance Score"))
 
-            if improvement_meter:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### 🚀 Improvement Meter")
-                st.markdown(extract("Improvement Meter"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### 🚀 Improvement Meter")
+            st.markdown(extract("Improvement Meter"))
 
-            if explain:
-                st.markdown("<div class='output-glass'>", unsafe_allow_html=True)
-                st.markdown("### 📘 Explanation")
-                st.markdown(extract("Explanation"))
-                st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown("### 📘 Explanation")
+            st.markdown(extract("Explanation"))
 
     messages.append({"role":"assistant","content":result})
 
@@ -303,3 +264,238 @@ STRICT FORMAT:
 if st.button("🧹 Clear Current Chat"):
     st.session_state.chats[current_chat] = []
     st.rerun()
+# ================= ENHANCEMENT LAYER =================
+import time
+import json
+from datetime import datetime
+
+st.divider()
+st.markdown("## 🚀 Ultra Enhancement Panel")
+
+# ================= THEME TOGGLE =================
+theme_mode = st.toggle("🌙 Neon Glow Mode")
+
+if theme_mode:
+    st.markdown("""
+    <style>
+    html, body, .stApp {
+        background: linear-gradient(135deg,#000000,#0f172a);
+    }
+    .card {
+        background: rgba(0,255,255,0.08);
+        border:1px solid rgba(0,255,255,0.4);
+        box-shadow: 0 0 20px rgba(0,255,255,0.3);
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+# ================= MODEL SWITCHER =================
+st.subheader("🧠 AI Model Settings")
+
+model_choice = st.selectbox(
+    "Select Gemini Model",
+    ["gemini-2.5-flash", "gemini-1.5-pro", "gemini-1.5-flash"]
+)
+
+temperature = st.slider("🔥 AI Creativity (Temperature)", 0.0, 1.0, 0.3, 0.1)
+
+genai.configure(api_key="YOUR_API_KEY_HERE")
+model = genai.GenerativeModel(
+    model_choice,
+    generation_config={"temperature": temperature}
+)
+
+# ================= SESSION STATS =================
+st.subheader("📊 Session Analytics")
+
+total_chats = len(st.session_state.chats)
+total_messages = sum(len(v) for v in st.session_state.chats.values())
+
+colA, colB = st.columns(2)
+colA.metric("💬 Total Chats", total_chats)
+colB.metric("📝 Total Messages", total_messages)
+
+# ================= EXPORT CHAT =================
+st.subheader("💾 Export Options")
+
+current_chat = st.session_state.current_chat
+chat_data = st.session_state.chats[current_chat]
+
+if chat_data:
+    export_text = ""
+    for msg in chat_data:
+        export_text += f"{msg['role'].upper()}:\n{msg['content']}\n\n"
+
+    st.download_button(
+        label="📥 Download Chat as TXT",
+        data=export_text,
+        file_name=f"chat_export_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+        mime="text/plain"
+    )
+
+# ================= DOWNLOAD LAST OPTIMIZED CODE =================
+if chat_data:
+    last_response = chat_data[-1]["content"] if chat_data[-1]["role"] == "assistant" else ""
+    code_match = re.search(r"```.*?\n(.*?)```", last_response, re.S)
+    extracted_code = code_match.group(1) if code_match else ""
+
+    if extracted_code:
+        st.download_button(
+            label="📦 Download Optimized Code",
+            data=extracted_code,
+            file_name="optimized_code.txt",
+            mime="text/plain"
+        )
+
+# ================= TYPING ANIMATION =================
+def typing_effect(text, speed=0.01):
+    placeholder = st.empty()
+    output = ""
+    for char in text:
+        output += char
+        placeholder.markdown(output)
+        time.sleep(speed)
+
+# ================= COPY BUTTON =================
+if chat_data:
+    if st.button("📋 Copy Last AI Response"):
+        st.code(chat_data[-1]["content"])
+        st.success("Copied to clipboard (manual select & copy).")
+
+# ================= CHAT MEMORY INFO =================
+st.subheader("🧠 Memory Monitor")
+
+for cid, msgs in st.session_state.chats.items():
+    st.caption(f"Chat ID: {cid[:8]}... | Messages: {len(msgs)}")
+
+st.success("✨ Ultra Enhancement Layer Activated Successfully!")
+# ================= ULTRA PRO EXTENSION =================
+import os
+import traceback
+import matplotlib.pyplot as plt
+
+st.divider()
+st.markdown("## 💎 Enterprise Upgrade Panel")
+
+# ================= SECURE API KEY INPUT =================
+st.subheader("🔐 Secure API Configuration")
+
+user_api_key = st.text_input("Enter Gemini API Key (optional override)", type="password")
+
+if user_api_key:
+    genai.configure(api_key=user_api_key)
+    st.success("Using custom API key securely.")
+
+# ================= FILE UPLOAD SUPPORT =================
+st.subheader("📂 Upload Code File")
+
+uploaded_file = st.file_uploader("Upload .py, .cpp, .java, .js, .go, .rs, .c file")
+
+if uploaded_file:
+    file_content = uploaded_file.read().decode("utf-8")
+    st.code(file_content, language=language.lower())
+    st.info("Copy above code into chat input to analyze.")
+
+# ================= AUTO SAVE CHAT =================
+st.subheader("💾 Persistent Chat Storage")
+
+SAVE_PATH = "saved_chats.json"
+
+if st.button("💾 Save All Chats"):
+    with open(SAVE_PATH, "w") as f:
+        json.dump(st.session_state.chats, f)
+    st.success("Chats saved locally.")
+
+if os.path.exists(SAVE_PATH):
+    if st.button("📂 Load Saved Chats"):
+        with open(SAVE_PATH, "r") as f:
+            st.session_state.chats = json.load(f)
+        st.success("Chats restored.")
+        st.rerun()
+
+# ================= AI RESPONSE TIMER =================
+st.subheader("🚦 Performance Monitor")
+
+if "last_response_time" not in st.session_state:
+    st.session_state.last_response_time = 0
+
+response_time = st.session_state.get("last_response_time", 0)
+st.metric("⏱ Last AI Response Time (sec)", f"{response_time:.2f}")
+
+# ================= TOKEN ESTIMATION =================
+st.subheader("🧠 Token Usage Estimator")
+
+if chat_data:
+    total_chars = sum(len(msg["content"]) for msg in chat_data)
+    approx_tokens = total_chars // 4
+    st.metric("📊 Approx Tokens Used", approx_tokens)
+
+# ================= PYTHON EXECUTION SANDBOX =================
+st.subheader("🧪 Python Execution Sandbox")
+
+sandbox_code = st.text_area("Run Python Code Safely")
+
+if st.button("▶ Run Code"):
+    try:
+        local_env = {}
+        exec(sandbox_code, {}, local_env)
+        st.success("Code executed successfully.")
+        st.write(local_env)
+    except Exception as e:
+        st.error("Execution Error:")
+        st.text(traceback.format_exc())
+
+# ================= COMPLEXITY VISUALIZATION =================
+st.subheader("📊 Complexity Visualizer")
+
+complexity_options = ["O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n²)", "O(2ⁿ)"]
+selected_complexity = st.selectbox("Select Algorithm Complexity", complexity_options)
+
+if st.button("Generate Complexity Graph"):
+    n = list(range(1, 20))
+
+    if selected_complexity == "O(1)":
+        y = [1 for _ in n]
+    elif selected_complexity == "O(log n)":
+        y = [1 if i == 1 else (i.bit_length()) for i in n]
+    elif selected_complexity == "O(n)":
+        y = n
+    elif selected_complexity == "O(n log n)":
+        y = [i * (i.bit_length()) for i in n]
+    elif selected_complexity == "O(n²)":
+        y = [i**2 for i in n]
+    else:
+        y = [2**i for i in n]
+
+    fig, ax = plt.subplots()
+    ax.plot(n, y)
+    ax.set_title(f"{selected_complexity} Growth")
+    ax.set_xlabel("Input Size")
+    ax.set_ylabel("Operations")
+    st.pyplot(fig)
+
+# ================= ANIMATED HEADER GLOW =================
+st.markdown("""
+<style>
+@keyframes glow {
+    0% { text-shadow: 0 0 10px #ff6b6b; }
+    50% { text-shadow: 0 0 25px #6bcBef; }
+    100% { text-shadow: 0 0 10px #ffd93d; }
+}
+h1 {
+    animation: glow 3s infinite alternate;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ================= FOOTER =================
+st.markdown("""
+<hr>
+<center>
+🚀 <b>Celestials CodeRefine Ultra Enterprise</b><br>
+AI-Powered Code Intelligence Platform<br>
+© 2026 Celestials Technologies
+</center>
+""", unsafe_allow_html=True)
+
+st.success("💎 Enterprise Features Activated Successfully!")
