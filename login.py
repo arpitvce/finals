@@ -77,8 +77,8 @@ set_background("images.jpg")
 # -------------------------
 # AUTH STATE
 # -------------------------
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
+if not st.session_state.get("authenticated", False):
+    st.switch_page("login.py")
 
 USERNAME = "arpit"
 PASSWORD = "1234"
