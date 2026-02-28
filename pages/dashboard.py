@@ -124,7 +124,7 @@ hr{
 """, unsafe_allow_html=True)
 
 # ================= GEMINI =================
-genai.configure(api_key="GET")
+genai.configure(api_key=os.getenv("GET"))
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 # ================= SESSION =================
