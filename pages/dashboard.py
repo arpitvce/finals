@@ -12,8 +12,8 @@ st.set_page_config(
 )
 
 # ================= REDIRECT CHECK =================
-if "user" not in st.session_state:
-    st.switch_page("login.py")   # change if needed
+if not st.session_state.get("authenticated", False):
+    st.switch_page("login.py")
 
 # ================= PREMIUM CSS =================
 st.markdown("""
